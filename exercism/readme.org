@@ -1,0 +1,33 @@
+#+TITLE: exercism.io solutions
+#+AUTHOR: Andrew Jarrett
+#+EMAIL: ahrjarrett@gmail.com
+#+OPTIONS: num:nil
+
+My solutions to various exercism problems.
+
+*Test:*
+Run `nodemon --exec jasmine-node` + the path to the directory.
+
+*Passing:*
+- Hello World
+- Leap ('Additional example of a leap year that is a common leap year')
+- Hamming
+- Rna Transcription
+- Bob
+- Pangram (Using reduce)
+- Phone Number
+- Grade School
+- ETL
+- Grains (Refactor: Allow total # of squares to be passed to the function)
+- Roman Numeral
+- Binary (Started 04/05/17) -- However, last test (validation) does **not** pass
+- Double Linked List (11/12/17) -- I think my solution is circular, too!
+
+*Failing:*
+- Gigasecond (Code doesn't run)
+- Word Cound('count() counts words with quotations')
+- Isogram ('Isogram Test Suite duplicates' and 'Isogram Test Suite Eleven')
+- Pangram (Started 2/20/17)
+- Circular Buffer (Unsolved)
+- Perfect Number (Really bizarre problem with file loading? Try later — 04/26/17)
+- Anagram (Broken 01-28-18)

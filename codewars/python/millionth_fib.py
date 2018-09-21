@@ -1,7 +1,6 @@
 # Source :
 # Author : Andrew Jarrett
 # Date   : 2018-09-21
-# Hint   : https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-11.html#%_sec_1.2.4
 
 '''
 In this kata you will have to calculate fib(n) where:
@@ -15,30 +14,22 @@ Write an algorithm that can handle n up to 2000000.
 Your algorithm must output the exact integer answer, to full precision. Also, it must correctly handle negative numbers as input.
 '''
 
-'''
-If n is even then k = n/2:
-F(n) = [2*F(k-1) + F(k)]*F(k)
-
-If n is odd then k = (n + 1)/2
-F(n) = F(k)*F(k) + F(k-1)*F(k-1)
-'''
-
-'''
-HINT I: Can you rearrange the equation fib(n + 2) = fib(n + 1) + fib(n) to find fib(n) if you already know fib(n + 1) and fib(n + 2)? Use this to reason what value fib has to have for negative values.
-'''
+# Hint   : https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-11.html#%_sec_1.2.4
 
 
-
-n = 10
-f = [0] * (n + 1)
+# initialize f for 2 million capacity:
+f = [0] * 2000000
 
 def fib(n):
+    # flag for if negative
+    negative = True if n < 0 else False
+    n = abs(n)
+
     if n == 0:
         return 0
     if n == 1 or n == 2:
         f[n] = 1
         return f[n]
-
     if f[n]:
         return f[n]
 
@@ -49,9 +40,11 @@ def fib(n):
     else:
         f[n] = (fib(k) * fib(k) + fib(k-1) * fib(k-1))
 
+    # if n was originally negative & also even, negate f[n] for solution
+    if negative and n % 2 == 0:
+        return -(f[n])
     return f[n]
 
-
-print(fib(n)) # 55
-
-# [0, 0]
+print(fib(10))      # 55
+print(fib(-20))     # -6765
+print(fib(1000000)) # BIG ASS NUMBER

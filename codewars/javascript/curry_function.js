@@ -17,8 +17,8 @@ let CurryIt = fn => {
 	let context = null
 
 	return function curry(...args) {
-    // If this is not global, native method might need access to it
-    if (this != global) context = this
+		// If this is not global, native method might need access to it
+		if (this != global) context = this
 
 		if(args.length === 0) {
 			let result = fn.call(context, ...curriedArgs)
@@ -27,7 +27,7 @@ let CurryIt = fn => {
 		}
 
 		args.forEach(arg => curriedArgs.push(arg))
-    // Return curry if 1+ args so we keep a closure over curriedArgs
+		// Return curry if 1+ args so we keep a closure over curriedArgs
 		return curry
 	}
 }

@@ -1,82 +1,42 @@
-function tco(f) {
-  var value
-  var active = false
-  var accumulated = []
+// Source : https://www.codewars.com/kata/algebraic-data-types/train/javascript
+// Author : Andrew Jarrett
+// Date   : 2018-09-21
 
-  return function accumulator() {
-	accumulated.push(arguments)
-
-    if (!active) {
-	  active = true
-
-      while (accumulated.length) {
-        value = f.apply(this, accumulated.shift())
-      }
-
-      active = false
-
-      return value
-    }
-  }
-}
-
-
-function zero(){}
+let zero = () => {}
 let succ = nat => () => nat
 
-let isZero = nat => !nat()
+let natToInt = nat => nat === zero ? 0 : 1 + natToInt(nat())
+let intToNat = int => int ? succ(intToNat(int - 1)) : zero
+let toString = nat => nat === zero ? 'zero' : 'succ(' + toString(nat()) + ')'
 
-let toString = nat => {
-  if(isZero(nat)) return 'zero'
-  return `succ(${toString(nat())})`
+let add = (n1, n2) =>
+	n1 === zero ? n2
+	: n2 === zero ? n1
+        : add(n1(), succ(n2))
+
+let mul = (n1, n2) => n1 === zero
+	? zero
+    : add(n2, mul(n1(), n2))
+
+let compareTo = (n1, n2) => {
+  if(n1 === zero && n2 === zero) return 0
+  if(n1 === zero) return -1
+  return n2 === zero ? 1 : compareTo(n1(), n2())
 }
 
-let intToNat = int => {
-  if(int === 0) return zero
-  return succ(intToNat(int - 1))
-}
+console.log('\n  compareTo:')
+console.log(compareTo(zero, zero))                      // => 0
+console.log(compareTo(zero, succ(zero)) < 0)            // => true
+console.log(compareTo(succ(zero), zero) > 0)            // => true
+console.log(compareTo(succ(zero), succ(zero)))          // => 0
+console.log(compareTo(intToNat(10), intToNat(15)) < 0 ) // => true
 
-
-let natToInt = nat => {
-  let recurse = (nat, sum=0) =>
-  	  isZero(nat) ? sum
-  	  : recurse(nat(), sum+1)
-  return recurse(nat)
-}
-
-let add = tco((nat1, nat2) => {
-  return nat1() ? add(nat1(), succ(nat2)) : nat2
-})
-
-let mul = tco((nat1, nat2, multiplier=nat1) => {
-  if(isZero(nat1) || isZero(nat2)) return zero
-  if(isZero(nat2())) return nat1
-  return mul(add(multiplier, nat1), nat2(), multiplier)
-})
-
-let compareTo = (nat1, nat2) => {
-  if(natToInt(nat1) > natToInt(nat2)) return 1
-  if(natToInt(nat1) < natToInt(nat2)) return -1
-  return 0
-}
-
-// console.log(natToInt(add(intToNat(5754), intToNat(3201))))
-
-
-
-
-// console.log('\n  compareTo:')
-// console.log(compareTo(zero, zero))                      // => 0
-// console.log(compareTo(zero, succ(zero)) < 0)            // => true
-// console.log(compareTo(succ(zero), zero) > 0)            // => true
-// console.log(compareTo(succ(zero), succ(zero)))          // => 0
-// console.log(compareTo(intToNat(10), intToNat(15)) < 0 ) // => true
-
-// console.log('\n  add:')
-// console.log(toString(add(zero, zero)))                     // => zero
-// console.log(toString(add(zero, succ(succ(zero)))))         // => succ(succ(zero))
-// console.log(toString(add(succ(zero), succ(succ(zero)))))   // => succ(succ(succ(zero)))
-// console.log(natToInt(add(intToNat(1001), intToNat(1201)))) // => 2202
+console.log('\n  add:')
+console.log(toString(add(zero, zero)))                     // => zero
+console.log(toString(add(zero, succ(succ(zero)))))         // => succ(succ(zero))
+console.log(toString(add(succ(zero), succ(succ(zero)))))   // => succ(succ(succ(zero)))
+console.log(natToInt(add(intToNat(1001), intToNat(1201)))) // => 2202
+console.log(natToInt(add(intToNat(7854), intToNat(3201)))) // => 11055
 
 console.log('\n  multiply:')
 console.log(toString(mul(zero, zero)))                         // => zero
@@ -90,19 +50,19 @@ console.log(natToInt(mul(intToNat(42), intToNat(4))))          // => 168
 console.log(natToInt(mul(intToNat(4), intToNat(42))))          // => 168
 console.log(natToInt(mul(intToNat(500), intToNat(16))))          // => 168
 
-// console.log('\n  intToNat:')
-// console.log(toString(intToNat(0))) // => zero
-// console.log(toString(intToNat(2))) // => succ(succ(zero))
+console.log('\n  intToNat:')
+console.log(toString(intToNat(0))) // => zero
+console.log(toString(intToNat(2))) // => succ(succ(zero))
 
-// console.log('\n  natToInt:')
-// console.log(natToInt(zero))             // => 0
-// console.log(natToInt(succ(zero)))       // => 1
-// console.log(natToInt(succ(succ(zero)))) // => 2
+console.log('\n  natToInt:')
+console.log(natToInt(zero))             // => 0
+console.log(natToInt(succ(zero)))       // => 1
+console.log(natToInt(succ(succ(zero)))) // => 2
 
-// console.log('\n  toString:')
-// console.log(toString(zero))             // => zero
-// console.log(toString(succ(succ(zero)))) // => succ(succ(zero))
+console.log('\n  toString:')
+console.log(toString(zero))             // => zero
+console.log(toString(succ(succ(zero)))) // => succ(succ(zero))
 
-// console.log('\n  isomorphisms:')
-// console.log(natToInt(intToNat(10)))                         // => 10
-// console.log(toString(intToNat(natToInt(succ(succ(zero)))))) // => succ(succ(zero)))
+console.log('\n  isomorphisms:')
+console.log(natToInt(intToNat(10)))                         // => 10
+console.log(toString(intToNat(natToInt(succ(succ(zero)))))) // => succ(succ(zero)))

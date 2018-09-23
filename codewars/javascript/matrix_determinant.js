@@ -63,78 +63,53 @@
  */
 
 // Helpers:
-let head = A => A[0]
-let rmCol = (M, col) =>
-  M.map(row =>
-    row.filter((_, i) => i !== col))
-let getCol = (M, col) =>
-  M.map(row =>
-    row.filter((_, i) => i === col))
-    .map(head)
 let getRow = (M, row) => M[row]
 let rmRow = (M, row) => M.filter((_, i) => i !== row)
+let rmCol = (M, col) =>
+  M.map(row =>
+    row.filter((r, i) => i !== col))
+let getCol = (M, col) =>
+  M.map(row =>
+    row.filter((r, i) => i === col))
+    .map(r => r[0])
 
-
-
-let determinant = M => {
-  if(M[0].length === 1) return M[0][0]
-  else return det(M)
-}
+let determinant = M => M[0].length === 1
+  ? M[0][0]
+  : det(M)
 
 let det2x2 = (M, mult=1) => {
-  console.log('\ncalling 2x2:\n', mult, '*')
-  console.log(M)
-
   let [[a1, a2], [b1, b2]] = M
-  let reduced = (a1 * b2) - (a2 * b1)
-  let result = mult * reduced
-  console.log('result of 2x2:\n', result, '\n')
-  return result
+  return mult * ((a1 * b2) - (a2 * b1))
 }
 
 let det = (M, mult=1) => {
-  console.log('calling det: \n', mult, '*')
-  console.log(M)
+  // Base case: 2x2 matrix:
+  if(M.length === 2) return det2x2(M, mult)
+  let [ r0, ...rows ] = M
 
-
-  // base case: we have a 2x2 matrix:
-  if(M.length === 2) {
-    return det2x2(M, mult)
-  }
-
-
-  let [ row0, ...rows ] = M
-
-
-  // returns an array of matrices
-  let smallerM = M.map((row, i) => rmCol(rows, i))
-
-  let result = mult * smallerM.reduce((acc, m, i) => {
-    return acc + det(m, i % 2 ? -row0[i] : row0[i])
+  // ms :: Matrix -> Array[Matrix]
+  let ms = M.map((row, i) => rmCol(rows, i))
+  return mult * ms.reduce((acc, m, i) => {
+    return acc + det(m, i % 2 ? -(r0[i]) : r0[i])
   }, 0)
-
-  return result
 }
-
 
 m1 = [ [1] ]
 m2 = [ [1, 3], [2,8] ]
 m3 = [ [2,5,3], [1,-2,-1], [1,3,4] ]
 m4 = [ [9,2,5,3], [8,1,-2,-1], [7,1,3,4], [6,3,1,-3] ]
 
+console.log(determinant(m1))     // => 1
+console.log(determinant(m2))     // => -1
+console.log(determinant(m3))     // => -20
+console.log(determinant(m4))     // => -150
 
-// console.log(determinant(m1))     // => 1
-// console.log(determinant(m2))     // => -1
-// console.log(determinant(m3))        // => -20
-console.log('starting')
-det(m3)
-// console.log('calling det w 3\n', det(m3, 6))            // => 
-// console.log(det(m2))            // => 2
-// console.log(det(m2, 7))            // => 7
-// console.log(det2x2(m2))             // => 2
-// console.log(det2x2(m2, 6))          // => 12
+console.log(det(m2))             // => 2
+console.log(det(m2, 7))          // => 14
+console.log(det2x2(m2))          // => 2
+console.log(det2x2(m2, 6))       // => 12
 
-// console.log(getCol(m3, 1)) // => [ 5, -2, 3 ]
-// console.log(rmCol(m3, 1))      // => [ [ 2, 3 ], [ 1, -1 ], [ 1, 4 ] ]
-// console.log(getRow(m3, 2)) // => [ 1, 3, 4 ]
-// console.log(rmRow(m3, 1))      // => [ [ 2, 5, 3 ], [ 1, 3, 4 ] ] 
+console.log(getCol(m3, 1))       // => [ 5, -2, 3 ]
+console.log(rmCol(m3, 1))        // => [ [ 2, 3 ], [ 1, -1 ], [ 1, 4 ] ]
+console.log(getRow(m3, 2))       // => [ 1, 3, 4 ]
+console.log(rmRow(m3, 1))        // => [ [ 2, 5, 3 ], [ 1, 3, 4 ] ] 

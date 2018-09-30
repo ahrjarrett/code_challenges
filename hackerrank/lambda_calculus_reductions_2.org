@@ -1,0 +1,16 @@
+#+TITLE: Reduction #2
+#+AUTHOR: Andrew Jarrett
+#+EMAIL: ahrjarrett@gmail.com
+
+[[https://www.hackerrank.com/challenges/lambda-calculus-reductions-2/problem][Source]]
+
+Reduce the following to no more than one term. If the expression cannot be reduced, enter "CAN'T REDUCE".
+
+#+BEGIN_SRC
+((λx.((λy.(x y))x))(λz.w))
+#+END_SRC
+
+#+BEGIN_SRC 
+w
+#+END_SRC
+

@@ -1,6 +1,6 @@
 // Source : https://www.codewars.com/kata/curry-me-softly/train/javascript
 // Author : Andrew Jarrett
-// Date   : 2018-09-2018
+// Date   : 2018-09-23
 
 /*
  * Note that this implementation of curry only works with

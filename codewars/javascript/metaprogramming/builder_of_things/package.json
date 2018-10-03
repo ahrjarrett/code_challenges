@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "chai": "4.2.0",
+    "mocha": "5.2.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "tdd": "mocha -w -R spec"
+  }
+}

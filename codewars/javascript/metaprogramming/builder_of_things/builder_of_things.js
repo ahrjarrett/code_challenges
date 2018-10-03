@@ -61,6 +61,7 @@ let STATE = {
   NONE: 'NONE',
   SET_BOOL: 'SET_BOOL',
   HAS_PROP: 'HAS_PROP',
+  FOR_EACH: 'FOR_EACH',
 }
 
 let singularize = plural => plural.replace(/s$/, '')
@@ -93,12 +94,36 @@ let make_proxy = instance => {
       }
 
       if(state === STATE.HAS_PROP) {
-
 	target[prop] = value === 1
 	  ? new Thing(singularize(prop))
 	  : new Array(value).fill(new Thing(singularize(prop)))
-
 	reset_proxy(target, prop)
+      }
+
+      if(state === STATE.FOR_EACH) {
+	console.log('\n')
+	console.log('###EACH ::')
+	console.log('###TARGET : ', target)
+	console.log('###STATE : ', state)
+	console.log('###VALUE : ', value)
+	console.log('###PROP : ', prop)
+	console.log('###PREV PROP : ', prev_prop)
+
+	// BORKEN
+	target['each'] = (...args) => target.forEach(thing => value(...args))
+	reset_proxy(target, prop)
+      }
+
+      if(prop === 'each') {
+	return fn => {
+	  target.__ = {
+	    state: STATE.FOR_EACH,
+	    value: fn,
+	    prev_prop: 'each'
+	  }
+
+	  return receiver
+	}
       }
 
       if(prop === 'has' || prop === 'having') {

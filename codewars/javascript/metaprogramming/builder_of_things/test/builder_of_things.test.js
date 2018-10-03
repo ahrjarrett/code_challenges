@@ -89,19 +89,19 @@ describe('Thing', () => {
 
   });
 
-//   describe('#each', () => {
-//     describe('jane.has(2).hands.each(hand => having(5).fingers)', () => {
-//       const jane = new Thing('Jane');
-//       jane.has(2).hands.each(hand => having(5).fingers);
+  describe('#each', () => {
+    describe('jane.has(2).hands.each(hand => having(5).fingers)', () => {
+      const jane = new Thing('Jane');
+      jane.has(2).hands.each(hand => having(5).fingers);
 
-//       it('should create 2 hands, each having 5 fingers', () => {
-//         expect(jane.hands.length).to.equal(2);
-//         expect(jane.hands[0].fingers.length).to.equal(5);
-//         expect(jane.hands[1].fingers.length).to.equal(5);
-//         expect(jane.hands[1].fingers[0].name).to.equal('finger');
-//       });
-//     });
-//   });
+      it('should create 2 hands, each having 5 fingers', () => {
+        expect(jane.hands.length).to.equal(2);
+        expect(jane.hands[0].fingers.length).to.equal(5);
+        expect(jane.hands[1].fingers.length).to.equal(5);
+        expect(jane.hands[1].fingers[0].name).to.equal('finger');
+      });
+    });
+  });
 
 //   describe('#is_the', () => {
 //     describe('jane.is_the.parent_of.joe', () => {
